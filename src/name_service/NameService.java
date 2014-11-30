@@ -8,5 +8,5 @@ public interface NameService extends Runnable{
 
     public Reference resolve(String name);
 
-    public void shutDown();
+     public void shutDown();
 }
