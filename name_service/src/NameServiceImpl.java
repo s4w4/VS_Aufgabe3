@@ -10,9 +10,12 @@ import java.util.concurrent.ThreadFactory;
  */
 public class NameServiceImpl implements NameService {
 
+    /** Maximale Anzahl der eingehenden Anfragen */
     private final int SOCKET_QUEUE_LENGTH = 40;
+    /** Timeout in Millisekunden */
     private final int TIMEOUT_IN_MS = 1000;
 
+    /** Flag: gibt an ob Namensdienst beendet werden soll*/
     private boolean shutDown = false;
 
     /** Der Port vom Namensdienst*/

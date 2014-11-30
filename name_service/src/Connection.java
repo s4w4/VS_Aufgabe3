@@ -7,8 +7,12 @@ import java.net.Socket;
 public class Connection {
 	private BufferedReader in;
 	private OutputStream out;
-	
-	public Connection(Socket mySock) throws IOException {
+
+    public static Connection init(Socket socket) throws IOException {
+        return new Connection(socket);
+    }
+
+	private Connection(Socket mySock) throws IOException {
 		in = new BufferedReader(new InputStreamReader(mySock.getInputStream()));
 		out = mySock.getOutputStream();		
 	}

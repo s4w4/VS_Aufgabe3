@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.net.Socket;
 
 /**
@@ -19,6 +20,26 @@ public class RequestHandlerImpl implements RequestHandler{
 
     @Override
     public void run() {
+        try {
+            Connection connection = getConnection();
+            String commandRequest = receive(connection);
+        } catch (IOException e) {
+            //TODO catch
+        }
+    }
 
+    private String receive(Connection connection) throws IOException {
+        String request = connection.receive();
+        return request;
+    }
+
+    private Connection getConnection() {
+        Connection connection = null;
+        try {
+             connection = Connection.init(socket);
+        } catch (IOException e) {
+            // TODO catch
+        }
+        return connection;
     }
 }
