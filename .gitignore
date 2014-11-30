@@ -1,3 +1,6 @@
 .idea/workspace.xml
 bank_access/*
+cash_access/*
+mware_lib/*
+name_service/*
 Test/*
