@@ -1,5 +1,0 @@
-/**
- * Reference
- */
-public class Reference {
-}

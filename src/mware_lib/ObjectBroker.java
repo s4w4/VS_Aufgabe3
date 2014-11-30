@@ -1,12 +1,14 @@
+package mware_lib;
+
 /**
- * ObjectBroker
+ * mware_lib.ObjectBroker
  *
  * - Front-End der Middleware -
  */
 public class ObjectBroker {
 
     /**
-     * Erstellt einen ObjectBroker
+     * Erstellt einen mware_lib.ObjectBroker
      *
      * Das hier zurückgelieferte Objekt ist der zentrale Einstiegspunkt
      * der Middleware aus Anwendersicht sein.
@@ -17,7 +19,7 @@ public class ObjectBroker {
      * @param serviceHost   Host vom Namensdienst
      * @param listenPort    Port vom Namensdienst
      * @param debug         Flag aktiviert Testausgaben
-     * @return  ObjectBroker
+     * @return  mware_lib.ObjectBroker
      */
     public static ObjectBroker init(String serviceHost, int listenPort, boolean debug) {
         return new ObjectBroker(serviceHost, listenPort, debug);
@@ -25,10 +27,10 @@ public class ObjectBroker {
 
     /**
      * Liefert den Namensdienst (Stellvetreterobjekt).
-     * @return NameService
+     * @return mware_lib.NameService
      */
     public NameService getNameService() {
-        //TODO: ObjectBroker.getNameService():
+        //TODO: mware_lib.ObjectBroker.getNameService():
         return null;
     }
 
@@ -36,7 +38,7 @@ public class ObjectBroker {
      * Beendet die Benutzung der Middleware in dieser Anwendung.
      */
     public void shutDown() {
-        // TODO: ObjectBroker.shutDown():
+        // TODO: mware_lib.ObjectBroker.shutDown():
     }
 
     /**
@@ -47,7 +49,7 @@ public class ObjectBroker {
      * @param debug         Flag aktiviert Testausgaben
      */
     public ObjectBroker(String serviceHost, int listenPort, boolean debug) {
-        // TODO ObjectBroker Konstruktor
+        // TODO mware_lib.ObjectBroker Konstruktor
     }
 
 }

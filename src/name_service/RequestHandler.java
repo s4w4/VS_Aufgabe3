@@ -1,5 +1,7 @@
+package name_service;
+
 /**
- * RequestHandler
+ * name_service.RequestHandler
  */
 public interface RequestHandler extends Runnable{
 }

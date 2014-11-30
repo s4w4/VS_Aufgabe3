@@ -1,5 +1,7 @@
+package bank_access;
+
 /**
- * AccountImplBase
+ * bank_access.AccountImplBase
  */
 public abstract class AccountImplBase {
 

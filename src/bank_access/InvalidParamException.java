@@ -1,5 +1,7 @@
+package bank_access;
+
 /**
- * InvalidParamException
+ * bank_access.InvalidParamException
  */
 public class InvalidParamException extends Exception {
     public InvalidParamException(String message) { super(message);}

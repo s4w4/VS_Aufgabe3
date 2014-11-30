@@ -1,5 +1,7 @@
+package cash_access;
+
 /**
- * TransactionImpl
+ * cash_access.TransactionImpl
  */
 public class TransactionImpl extends TransactionImplBase {
 

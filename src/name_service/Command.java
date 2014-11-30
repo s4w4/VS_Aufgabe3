@@ -1,7 +1,7 @@
-import java.util.Map;
+package name_service;
 
 /**
- * Command
+ * name_service.Command
  */
 public enum Command {
     REQUEST_REBIND,
@@ -59,10 +59,12 @@ public enum Command {
     }
 
     private void requestRebind(String inputParameter) {
-        String host = "";
-        int port = 0;
-        Object type = null;
-        String name = "";
+
+        String[] params = inputParameter.split("!")[1].split(";");
+        String host = params[0];
+        int port = Integer.parseInt(params[1]);
+        Object type = params[2];
+        String name = params[3];
 
 
     }

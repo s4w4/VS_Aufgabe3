@@ -1,5 +1,7 @@
+package cash_access;
+
 /**
- * TransactionImplBase
+ * cash_access.TransactionImplBase
  */
 public abstract class TransactionImplBase {
 

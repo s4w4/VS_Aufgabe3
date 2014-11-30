@@ -1,5 +1,7 @@
+package mware_lib;
+
 /**
- * NameService
+ * mware_lib.NameService
  * - Schnittstelle zum Namensdienstes -
  */
 public abstract class NameService {

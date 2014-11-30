@@ -1,8 +1,10 @@
+package name_service;
+
 import java.io.IOException;
 import java.net.Socket;
 
 /**
- * RequestHandler
+ * name_service.RequestHandler
  */
 public class RequestHandlerImpl implements RequestHandler{
 

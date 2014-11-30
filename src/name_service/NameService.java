@@ -1,5 +1,7 @@
+package name_service;
+
 /**
- *  NameService
+ *  name_service.NameService
  */
 public interface NameService extends Runnable{
     public void rebind(String name, Reference reference);

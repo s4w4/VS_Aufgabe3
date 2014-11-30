@@ -1,5 +1,7 @@
+package bank_access;
+
 /**
- * ManagerImplBase
+ * bank_access.ManagerImplBase
  */
 public abstract class ManagerImplBase {
 

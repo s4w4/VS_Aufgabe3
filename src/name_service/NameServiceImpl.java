@@ -1,3 +1,5 @@
+package name_service;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.ServerSocketChannel;
@@ -6,7 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
 
 /**
- * NameServiceImpl
+ * name_service.NameServiceImpl
  */
 public class NameServiceImpl implements NameService {
 
@@ -24,11 +26,11 @@ public class NameServiceImpl implements NameService {
     private final ExecutorService pool;
 
     /**
-     * Erstellt ein NameService
+     * Erstellt ein name_service.NameService
      *
      * @param port              Port vom Namensdienst
      * @param threadPoolSize    maximale Anzahl von Threads
-     * @return  NameService
+     * @return  name_service.NameService
      */
     public static NameService init(int port,int threadPoolSize){
         return new NameServiceImpl(port,threadPoolSize);
