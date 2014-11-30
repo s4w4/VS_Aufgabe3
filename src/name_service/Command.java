@@ -46,8 +46,7 @@ public enum Command {
         String inputParameter = getInputParameter(inputWithCommand);
 
         switch (this) {
-            case REQUEST_REBIND:
-                requestRebind(inputParameter);
+            case REQUEST_REBIND:    requestRebind(inputParameter);
             case RESPONSE_REBIND:
             case REQUEST_RESOLVE:
             case RESPONSE_RESOLVE:
@@ -59,13 +58,11 @@ public enum Command {
     }
 
     private void requestRebind(String inputParameter) {
-
         String[] params = inputParameter.split("!")[1].split(";");
         String host = params[0];
         int port = Integer.parseInt(params[1]);
         Object type = params[2];
         String name = params[3];
-
 
     }
 
