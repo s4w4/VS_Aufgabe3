@@ -15,14 +15,13 @@ public class TestClient {
     public static void main(String[] args){
 
         try {
-            Socket s = new Socket("localhost",5000);
+
 
             for (int i = 0; i < 4; i++){
-                Client c = new Client("c"+i, s);
+                Client c = new Client("c"+i );
                 c.send("Hi "+i);
                 Thread.sleep(1000l);
             }
-            s.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -37,11 +36,11 @@ public class TestClient {
         private final Socket socket;
         private final String name;
 
-        public static Client init(String name, Socket socket){ return new Client(name, socket);}
+        public static Client init(String name ) throws IOException { return new Client(name );}
 
-        private Client(String name, Socket socket){
+        private Client(String name ) throws IOException {
             this.name = name;
-            this.socket = socket;
+            this.socket = new Socket("localhost",5000);
         }
 
         public void send(String msg) {
@@ -49,6 +48,7 @@ public class TestClient {
                 Connection connection = Connection.init(socket);
                 connection.send(msg);
                 System.out.println("Client: "+name+" >>> "+msg);
+                connection.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
