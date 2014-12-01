@@ -1,5 +1,7 @@
 package name_service;
-
+/**
+ * Die Connection Klasse ist aus tcp_advanced.zip  
+ */
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
