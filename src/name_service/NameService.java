@@ -1,27 +1,40 @@
 package name_service;
 
 /**
- *  name_service.NameService
+ * name_service.NameService
  */
-public interface NameService extends Runnable{
-	
-   /**
-    * ein Objekt (servant) anmelden.
-    * Eine eventuell schon vorhandene Objektreferenz gleichen Namens
-    * wird überschrieben.
-    * 
-    * @param name
-    * @param reference
-    */
-	public void rebind(String name, Reference reference);
-   /**
-    *
-    * Liefert eine generische Objektreferenz zu einem Namen.
-    *
-    * @param name  String
-    * @return  Object
-    */
-    public Reference resolve(String name);
+public abstract class NameService{
 
-     public void shutDown();
+	/**
+	 * eine generische Objektreferenz anmelden. Eine eventuell schon vorhandene
+	 * Objektreferenz gleichen Namens wird überschrieben.
+	 * 
+	 * @param name
+	 * @param reference
+	 */
+	public abstract void rebind(String name, Reference reference);
+
+	/**
+	 *
+	 * Liefert eine generische Objektreferenz zu einem Namen.
+	 *
+	 * @param name
+	 * @return reference
+	 */
+	public abstract Reference resolve(String name);
+
+	/**
+	 * Nameserver stoppen 
+	 */
+	public abstract void shutDown();
+	
+	/**
+	 * Nameserver wird erstellt und gestartet
+	 * 
+	 * @param port
+	 * @return
+	 */
+	public static NameServiceImpl init(int port){
+		return new NameServiceImpl(port); 
+	}
 }
