@@ -2,6 +2,9 @@ package name_service;
 
 /**
  * name_service.NameService
+ * 
+ * Im Nameservice werden Referenzen zu einem Namen abgelegt/abgefragt
+ * 
  */
 public abstract class NameService{
 
@@ -24,17 +27,13 @@ public abstract class NameService{
 	public abstract Reference resolve(String name);
 
 	/**
-	 * Nameserver stoppen 
-	 */
-	public abstract void shutDown();
-	
-	/**
 	 * Nameserver wird erstellt und gestartet
 	 * 
 	 * @param port
 	 * @return
 	 */
 	public static NameServiceImpl init(int port){
-		return new NameServiceImpl(port); 
+		NameServiceImpl ns = new NameServiceImpl(port); 
+		return ns; 
 	}
 }

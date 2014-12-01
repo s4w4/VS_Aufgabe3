@@ -2,6 +2,7 @@ package name_service;
 
 /**
  * name_service.Reference
+ * Die Referenz eines Objektes
  */
 public class Reference {
 	
