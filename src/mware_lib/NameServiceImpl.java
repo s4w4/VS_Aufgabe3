@@ -24,6 +24,7 @@ public class NameServiceImpl extends NameService {
     private final int nsPort;
     private final String nsHost;
     private final ServerSocket socket;
+    private final int localPort;
     private Map<Reference, Object> servantMap = Collections.synchronizedMap(new HashMap<Reference, Object>());
 
     /**
@@ -48,6 +49,7 @@ public class NameServiceImpl extends NameService {
         this.nsHost = nsHost;
         this.nsPort = nsPort;
         this.socket = socket;
+        this.localPort = socket.getLocalPort();
     }
 
     @Override
@@ -57,11 +59,11 @@ public class NameServiceImpl extends NameService {
 
         try {
             Socket nsSocket = new Socket(this.nsHost, this.nsPort);
-            Connection connection = Connection.init(nsSocket);
-            connection.send(requestMessage);
-            checkResponseRebindMessage(connection.receive());
+            ConnectionString connectionString = ConnectionString.init(nsSocket);
+            connectionString.send(requestMessage);
+            checkResponseRebindMessage(connectionString.receive());
 
-            connection.close();
+            connectionString.close();
         } catch (IOException e) {
             // TODO catch
         } catch (ResponseException e) {
@@ -75,9 +77,9 @@ public class NameServiceImpl extends NameService {
         String requestMessage = createRequestResolveMessage(name);
         try {
             Socket nsSocket = new Socket(this.nsHost, this.nsPort);
-            Connection connection = Connection.init(nsSocket);
-            connection.send(requestMessage);
-            reference = checkResponseResolveMessage(connection.receive());
+            ConnectionString connectionString = ConnectionString.init(nsSocket);
+            connectionString.send(requestMessage);
+            reference = checkResponseResolveMessage(connectionString.receive());
 
         } catch (IOException e) {
             // TODO catch
@@ -85,6 +87,15 @@ public class NameServiceImpl extends NameService {
             System.err.println(e);
         }
         return reference;
+    }
+
+
+    /**
+     * Beendet den Namensdienst
+     * @throws IOException
+     */
+    public void shutdown() throws IOException {
+        this.socket.close();
     }
 
 
@@ -176,7 +187,7 @@ public class NameServiceImpl extends NameService {
         Reference reference = null;
         try {
             String localhost = InetAddress.getLocalHost().getHostName();
-            int port = socket.getLocalPort();
+            int port = this.getLocalPort();
             String type = servant.getClass().getName();
             reference = new Reference(localhost, port, type, name);
             servantMap.put(reference,servant);
@@ -186,11 +197,9 @@ public class NameServiceImpl extends NameService {
         return reference;
     }
 
-    /**
-     * Beendet den Namensdienst
-     * @throws IOException
-     */
-    public void shutdown() throws IOException {
-        this.socket.close();
+
+
+    public int getLocalPort(){
+        return this.localPort;
     }
 }
