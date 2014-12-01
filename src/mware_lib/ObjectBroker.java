@@ -1,11 +1,19 @@
 package mware_lib;
 
+
+import java.io.IOException;
+import java.net.ServerSocket;
+
 /**
  * mware_lib.ObjectBroker
  *
  * - Front-End der Middleware -
  */
 public class ObjectBroker {
+
+    private SkeletonManager skeletonManager;
+    private NameServiceImpl nameService;
+    private ServerSocket serverSocket;
 
     /**
      * Erstellt einen mware_lib.ObjectBroker
@@ -21,7 +29,7 @@ public class ObjectBroker {
      * @param debug         Flag aktiviert Testausgaben
      * @return  mware_lib.ObjectBroker
      */
-    public static ObjectBroker init(String serviceHost, int listenPort, boolean debug) {
+    public static ObjectBroker init(String serviceHost, int listenPort, boolean debug)   {
         return new ObjectBroker(serviceHost, listenPort, debug);
     }
 
@@ -30,15 +38,20 @@ public class ObjectBroker {
      * @return mware_lib.NameService
      */
     public NameService getNameService() {
-        //TODO: mware_lib.ObjectBroker.getNameService():
-        return null;
+        return this.nameService;
     }
 
     /**
      * Beendet die Benutzung der Middleware in dieser Anwendung.
      */
-    public void shutDown() {
-        // TODO: mware_lib.ObjectBroker.shutDown():
+    public void shutdown() {
+        try {
+            nameService.shutdown();
+            skeletonManager.shutdown();
+
+        } catch (IOException e) {
+            // TODO: catch
+        }
     }
 
     /**
@@ -49,7 +62,15 @@ public class ObjectBroker {
      * @param debug         Flag aktiviert Testausgaben
      */
     public ObjectBroker(String serviceHost, int listenPort, boolean debug) {
-        // TODO mware_lib.ObjectBroker Konstruktor
+        try {
+            serverSocket = new ServerSocket(0);
+            this.nameService = NameServiceImpl.init(serviceHost, listenPort, serverSocket);
+            skeletonManager = SkeletonManagerImpl.init(nameService);
+            (new Thread(skeletonManager)).start();
+
+        } catch (IOException e) {
+            // TODO catch
+        }
     }
 
 }
