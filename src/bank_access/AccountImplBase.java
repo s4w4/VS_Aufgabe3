@@ -1,5 +1,7 @@
 package bank_access;
 
+import mware_lib.Reference;
+
 /**
  * bank_access.AccountImplBase
  */
@@ -10,6 +12,7 @@ public abstract class AccountImplBase {
     public abstract double getBalance();
 
     public static AccountImplBase narrowCast(Object rawObjectRef) {
-        return null;
+    	Reference reference = (Reference) rawObjectRef;
+        return new AccountImpl(reference);
     }
 }
