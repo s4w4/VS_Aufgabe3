@@ -19,17 +19,27 @@ public class SkeletonImpl extends Skeleton {
         this.socket = socket;
         this.nameService = nameService;
         this.logger = logger;
+        logger.log(Level.CONFIG, "Skeleton erstellt");
     }
 
     @Override
     public void run() {
+        logger.log(Level.CONFIG, "Skeleton gestartet");
         try {
 
             ConnectionObject connectionObject = ConnectionObject.init(socket);
+            logger.log(Level.INFO,"Verbindungsaufbau");
             CallMethod callMethod = receiveMethod(connectionObject);
+            logger.log(Level.INFO,"Skeleton Receive: Methodenname= "+callMethod.getMethodName()+", " +
+                    "Args= "+callMethod.getArgs()+", " +
+                    "Types= "+callMethod.getTypes()+", " +
+                    "Ref= "+callMethod.getReference());
+
             ReturnMethod returnMethod = invoke(callMethod);
+            logger.log(Level.INFO, "Skeleton Return: Value= "+returnMethod.getReturnValue()+", Throwable= "+returnMethod.getThrowable());
             connectionObject.send(returnMethod);
 
+            connectionObject.close();
         } catch (IOException e) {
             logger.log(Level.SEVERE,e.toString());
         } catch (ClassNotFoundException e) {

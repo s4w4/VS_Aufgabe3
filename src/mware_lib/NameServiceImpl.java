@@ -55,6 +55,7 @@ public class NameServiceImpl extends NameService {
 
     @Override
     public void rebind(Object servant, String name) {
+        logger.log(Level.CONFIG, "rebind mit servant= "+servant+", name= "+name);
         Reference reference = addServant(servant, name);
         String requestMessage = createRequestRebindMessage(reference);
 
@@ -62,9 +63,8 @@ public class NameServiceImpl extends NameService {
             Socket nsSocket = new Socket(this.nsHost, this.nsPort);
             ConnectionString connectionString = ConnectionString.init(nsSocket);
             connectionString.send(requestMessage);
-            logger.log(Level.INFO, "send");
+            logger.log(Level.INFO, "Rebind Send: Nachricht= "+requestMessage);
             checkResponseRebindMessage(connectionString.receive());
-
             connectionString.close();
         } catch (IOException e) {
             logger.log(Level.SEVERE,e.toString());
@@ -75,12 +75,14 @@ public class NameServiceImpl extends NameService {
 
     @Override
     public Object resolve(String name) {
+        logger.log(Level.CONFIG, "Resolve mit Name= "+name);
         Reference reference = null;
         String requestMessage = createRequestResolveMessage(name);
         try {
             Socket nsSocket = new Socket(this.nsHost, this.nsPort);
             ConnectionString connectionString = ConnectionString.init(nsSocket);
             connectionString.send(requestMessage);
+            logger.log(Level.INFO, "Resolve Send: Nachricht= "+requestMessage);
             reference = checkResponseResolveMessage(connectionString.receive());
 
         } catch (IOException e) {
@@ -96,12 +98,13 @@ public class NameServiceImpl extends NameService {
      * @throws IOException
      */
     public void shutdown() throws IOException {
+        logger.log(Level.INFO,"NameService beendet");
         this.socket.close();
     }
 
     public Object findServant(Reference servant){
         Object obj = servantMap.get(servant);
-        logger.log(Level.INFO,"findServant: Obj > "+obj+" "+servantMap.size()+"; "+servant);
+        logger.log(Level.INFO,"findServant: servant= "+servant+", ReturnObj= "+obj);
         return obj;
     }
 
@@ -113,6 +116,7 @@ public class NameServiceImpl extends NameService {
      * @throws ResponseException
      */
     private void checkResponseRebindMessage(String response) throws ResponseException {
+        logger.log(Level.INFO, "Rebind Receive: Nachricht= "+response);
         if (response.isEmpty()) throw new ResponseException("Leere Response vom Namensdienst bei Response_Rebind");
 
         String[] reponseArgs = response.split("!");
@@ -128,6 +132,7 @@ public class NameServiceImpl extends NameService {
                 errMessage = "Fehler beim Namensdienst";
             throw new ResponseException("ERROR RESPONSE REBIND: "+errMessage);
         }
+
     }
 
     /**
@@ -138,6 +143,7 @@ public class NameServiceImpl extends NameService {
      * @throws ResponseException
      */
     private Reference checkResponseResolveMessage(String response) throws ResponseException{
+        logger.log(Level.INFO, "Resolve Receive: Nachricht= "+response);
         Reference reference = null;
         if (response.isEmpty()) throw new ResponseException("Leere Response vom Namensdienst bei Response_Resolve");
         String[] reponseArgs = response.split("!");
@@ -173,7 +179,6 @@ public class NameServiceImpl extends NameService {
         String type = reference.getType();
         String name = reference.getName();
         String returnStr = REQUEST_REBIND_MESSAGE_COMMAND +" ! "+host+"; "+port+"; "+type+"; "+name;
-        logger.log(Level.INFO, returnStr);
         return returnStr;
     }
     /**
@@ -196,6 +201,7 @@ public class NameServiceImpl extends NameService {
      * @return  Reference
      */
     private Reference addServant(Object servant, String name) {
+        logger.log(Level.INFO, "AddServant: servant= "+servant+", name= "+name);
         Reference reference = null;
         try {
             String localhost = InetAddress.getLocalHost().getHostName();

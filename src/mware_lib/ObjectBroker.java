@@ -72,18 +72,24 @@ public class ObjectBroker {
     public ObjectBroker(String serviceHost, int listenPort, boolean debug) {
         try {
             logger = Logger.getLogger(ObjectBroker.class.getName() );
+            logger.info("Logger erstellt");
             if(debug) {
                 fileHandler = new FileHandler("log/Middleware.log");
                 SimpleFormatter simpleFormatter = new SimpleFormatter();
                 fileHandler.setFormatter(simpleFormatter);
                 logger.addHandler(fileHandler);
+                logger.info("log/Middleware.log erstellt");
             }
 
-            logger.info("Logger erstellt");
-
             serverSocket = new ServerSocket(0);
+            logger.log(Level.INFO, "ServerSocket erstellt mit Port: "+serverSocket.getLocalPort());
+
             this.nameService = NameServiceImpl.init(serviceHost, listenPort, serverSocket, logger);
+            logger.log(Level.CONFIG,"NameService erstellt");
+
             skeletonManager = SkeletonManagerImpl.init(nameService, logger);
+            logger.log(Level.CONFIG,"SkeletonManager erstellt");
+
             (new Thread(skeletonManager)).start();
 
         } catch (IOException e) {

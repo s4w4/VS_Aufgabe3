@@ -14,7 +14,6 @@ import java.util.logging.*;
  */
 public class SkeletonManagerImpl extends SkeletonManager {
 
-    private final int MAX_SOCKET_QUEUE_LENGTH = 40;
     private final int THREAD_POOL_SIZE = 1000;
     private final ExecutorService pool;
     private boolean interrupt = false;
@@ -30,11 +29,13 @@ public class SkeletonManagerImpl extends SkeletonManager {
 
     @Override
     public void shutdown() {
+        logger.log(Level.INFO, "SkeletonManager beendet");
         this.setInterrupt(true);
     }
 
     @Override
     public void run() {
+        logger.log(Level.CONFIG, "SkeletonManager gestartet");
         ServerSocket serverSocket = null;
         try {
              serverSocket = nameService.getSocket();
