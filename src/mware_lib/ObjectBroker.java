@@ -3,6 +3,7 @@ package mware_lib;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.logging.*;
 
 /**
  * mware_lib.ObjectBroker
@@ -14,6 +15,8 @@ public class ObjectBroker {
     private SkeletonManager skeletonManager;
     private NameServiceImpl nameService;
     private ServerSocket serverSocket;
+    private Logger logger;
+    private FileHandler fileHandler;
 
     /**
      * Erstellt einen mware_lib.ObjectBroker
@@ -50,7 +53,10 @@ public class ObjectBroker {
             skeletonManager.shutdown();
 
         } catch (IOException e) {
-            // TODO: catch
+            logger.log(Level.SEVERE,e.toString());
+        } finally {
+            nameService = null;
+            skeletonManager = null;
         }
     }
 
@@ -63,13 +69,23 @@ public class ObjectBroker {
      */
     public ObjectBroker(String serviceHost, int listenPort, boolean debug) {
         try {
+            fileHandler = new FileHandler("log/Middleware.log");
+            SimpleFormatter simpleFormatter = new SimpleFormatter();
+            fileHandler.setFormatter(simpleFormatter);
+            logger.addHandler(fileHandler);
+            logger.info("Logger erstellt");
+
             serverSocket = new ServerSocket(0);
-            this.nameService = NameServiceImpl.init(serviceHost, listenPort, serverSocket);
-            skeletonManager = SkeletonManagerImpl.init(nameService);
+            this.nameService = NameServiceImpl.init(serviceHost, listenPort, serverSocket, logger);
+            skeletonManager = SkeletonManagerImpl.init(nameService, logger);
             (new Thread(skeletonManager)).start();
 
+
+
         } catch (IOException e) {
-            // TODO catch
+            logger.log(Level.SEVERE,e.toString());
+        }  catch (SecurityException e) {
+            logger.log(Level.SEVERE,e.toString());
         }
     }
 

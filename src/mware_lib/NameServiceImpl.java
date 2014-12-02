@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.*;
 
 /**
  * NameServiceImpl
@@ -26,6 +27,7 @@ public class NameServiceImpl extends NameService {
     private final ServerSocket socket;
     private final int localPort;
     private Map<Reference, Object> servantMap = Collections.synchronizedMap(new HashMap<Reference, Object>());
+    private Logger logger;
 
     /**
      * Erstellt NameServiceImpl
@@ -34,8 +36,8 @@ public class NameServiceImpl extends NameService {
      * @param socket    ServerSocket von der Application
      * @return  NameServiceImpl
      */
-    public static NameServiceImpl init(String nsHost, int nsPort, ServerSocket socket){
-        return new NameServiceImpl(nsHost, nsPort, socket);
+    public static NameServiceImpl init(String nsHost, int nsPort, ServerSocket socket, Logger logger){
+        return new NameServiceImpl(nsHost, nsPort, socket, logger);
     }
 
     /**
@@ -45,11 +47,12 @@ public class NameServiceImpl extends NameService {
      * @param nsPort    Port vom Namensdienst
      * @param socket    ServerSocket von der Application
      */
-    public NameServiceImpl(String nsHost, int nsPort, ServerSocket socket){
+    public NameServiceImpl(String nsHost, int nsPort, ServerSocket socket, Logger logger){
         this.nsHost = nsHost;
         this.nsPort = nsPort;
         this.socket = socket;
         this.localPort = socket.getLocalPort();
+        this.logger = logger;
     }
 
     @Override
@@ -65,9 +68,9 @@ public class NameServiceImpl extends NameService {
 
             connectionString.close();
         } catch (IOException e) {
-            // TODO catch
+            logger.log(Level.SEVERE,e.toString());
         } catch (ResponseException e) {
-            System.err.println(e);
+            logger.log(Level.SEVERE, e.toString());
         }
     }
 
@@ -82,9 +85,9 @@ public class NameServiceImpl extends NameService {
             reference = checkResponseResolveMessage(connectionString.receive());
 
         } catch (IOException e) {
-            // TODO catch
+            logger.log(Level.SEVERE,e.toString());
         } catch (ResponseException e) {
-            System.err.println(e);
+            logger.log(Level.SEVERE,e.toString());
         }
         return reference;
     }
@@ -138,8 +141,12 @@ public class NameServiceImpl extends NameService {
 
         if (response.isEmpty()) throw new ResponseException("Leere Response vom Namensdienst bei Response_Resolve");
         String[] reponseArgs = response.split("!");
-        if (reponseArgs == null || response.indexOf(REQUEST_RESOLVE_MESSAGE_COMMAND) != 1)
+        if (reponseArgs == null || response.indexOf(RESPONSE_RESOLVE_MESSAGE_COMMAND) != 1)
             throw new ResponseException("Falsche Response vom Namensdienst bei Response_Resolve");
+
+        if (response.indexOf(RESPONSE_RESOLVE_MESSAGE_COMMAND) == 1 && reponseArgs.length >= 1 )
+            throw new ResponseException("Error Response vom Namensdienst");
+
         if (reponseArgs.length == 5 ) {
             String host = reponseArgs[1];
             int port = Integer.parseInt(reponseArgs[2]);
@@ -164,7 +171,7 @@ public class NameServiceImpl extends NameService {
         String port = reference.getPort()+"";
         String type = reference.getType();
         String name = reference.getName();
-        return REQUEST_REBIND_MESSAGE_COMMAND +" ! "+host+";"+port+";"+type+";"+name;
+        return REQUEST_REBIND_MESSAGE_COMMAND +"!"+host+";"+port+";"+type+";"+name;
     }
 
     /**
@@ -175,7 +182,7 @@ public class NameServiceImpl extends NameService {
      * @return String
      */
     private String createRequestResolveMessage(String name) {
-        return REQUEST_RESOLVE_MESSAGE_COMMAND +" ! "+name;
+        return REQUEST_RESOLVE_MESSAGE_COMMAND +"!"+name;
     }
 
 
@@ -195,7 +202,7 @@ public class NameServiceImpl extends NameService {
             reference = new Reference(localhost, port, type, name);
             servantMap.put(reference,servant);
         } catch (UnknownHostException e) {
-            // TODO catch
+            logger.log(Level.SEVERE,e.toString());
         }
         return reference;
     }

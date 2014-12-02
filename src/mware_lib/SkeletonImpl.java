@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
+import java.util.logging.*;
 
 /**
  * SkeletonImpl.
@@ -12,10 +13,12 @@ public class SkeletonImpl extends Skeleton {
 
     private final Socket socket;
     private final NameServiceImpl nameService;
+    private Logger logger;
 
-    protected SkeletonImpl(Socket socket, NameServiceImpl nameService){
+    protected SkeletonImpl(Socket socket, NameServiceImpl nameService, Logger logger){
         this.socket = socket;
         this.nameService = nameService;
+        this.logger = logger;
     }
 
     @Override
@@ -28,11 +31,11 @@ public class SkeletonImpl extends Skeleton {
             connectionObject.send(returnMethod);
 
         } catch (IOException e) {
-            // TODO catch
+            logger.log(Level.SEVERE,e.toString());
         } catch (ClassNotFoundException e) {
-            // TODO catch
+            logger.log(Level.SEVERE,e.toString());
         } catch (RuntimeException e) {
-            // TODO catch
+            logger.log(Level.SEVERE,e.toString());
         }
     }
 
@@ -63,12 +66,16 @@ public class SkeletonImpl extends Skeleton {
             returnValue = method.invoke(servant, args);
         } catch (ClassNotFoundException e) {
             throwable = e.getCause();
+            logger.log(Level.SEVERE,e.toString());
         } catch (InvocationTargetException e) {
             throwable = e.getCause();
+            logger.log(Level.SEVERE,e.toString());
         } catch (NoSuchMethodException e) {
             throwable = e.getCause();
+            logger.log(Level.SEVERE,e.toString());
         } catch (IllegalAccessException e) {
             throwable = e.getCause();
+            logger.log(Level.SEVERE,e.toString());
         } finally {
             returnMethod = new ReturnMethod(returnValue, throwable);
         }

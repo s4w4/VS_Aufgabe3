@@ -7,6 +7,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.logging.*;
 
 /**
  * SkeletonManagerImpl
@@ -19,10 +20,12 @@ public class SkeletonManagerImpl extends SkeletonManager {
     private boolean interrupt = false;
 
     private NameServiceImpl nameService;
+    private Logger logger;
 
-    protected SkeletonManagerImpl(NameServiceImpl nameService){
+    protected SkeletonManagerImpl(NameServiceImpl nameService, Logger logger){
         this.nameService = nameService;
         this.pool = createThreadPool();
+        this.logger = logger;
     }
 
     @Override
@@ -40,16 +43,16 @@ public class SkeletonManagerImpl extends SkeletonManager {
             serverSocket.bind(new InetSocketAddress(localPort), MAX_SOCKET_QUEUE_LENGTH);
 
             while (!this.isInterrupt()){
-                pool.execute(Skeleton.init(serverSocket.accept(),nameService));
+                pool.execute(Skeleton.init(serverSocket.accept(),nameService, logger));
             }
 
         } catch (IOException e) {
-            // TODO catch
+            logger.log(Level.SEVERE,e.toString());
         } finally {
             try {
                 if (serverSocketChannel != null) serverSocketChannel.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE,e.toString());
             }
         }
     }
