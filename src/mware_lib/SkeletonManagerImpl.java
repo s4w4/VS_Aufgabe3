@@ -35,13 +35,9 @@ public class SkeletonManagerImpl extends SkeletonManager {
 
     @Override
     public void run() {
-        ServerSocketChannel serverSocketChannel = null;
+        ServerSocket serverSocket = null;
         try {
-            int localPort = nameService.getLocalPort();
-            serverSocketChannel = ServerSocketChannel.open();
-            ServerSocket serverSocket = serverSocketChannel.socket();
-            serverSocket.bind(new InetSocketAddress(localPort), MAX_SOCKET_QUEUE_LENGTH);
-
+             serverSocket = nameService.getSocket();
             while (!this.isInterrupt()){
                 pool.execute(Skeleton.init(serverSocket.accept(),nameService, logger));
             }
@@ -50,7 +46,7 @@ public class SkeletonManagerImpl extends SkeletonManager {
             logger.log(Level.SEVERE,e.toString());
         } finally {
             try {
-                if (serverSocketChannel != null) serverSocketChannel.close();
+                if (serverSocket != null) serverSocket.close();
             } catch (IOException e) {
                 logger.log(Level.SEVERE,e.toString());
             }

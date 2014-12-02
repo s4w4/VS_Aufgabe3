@@ -4,6 +4,7 @@ import mware_lib.ConnectionString;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.channels.ServerSocketChannel;
 import java.util.concurrent.ExecutorService;
@@ -31,10 +32,11 @@ public class TestServer {
         });
 
         try {
-            ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
-            serverSocketChannel.socket().bind(new InetSocketAddress(port),MAX_INCOMMING_CONNECTIONS);
+            ServerSocket serverSocket = new ServerSocket(5000);
+            //ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+            //serverSocketChannel.socket().bind(new InetSocketAddress(port),MAX_INCOMMING_CONNECTIONS);
             while (true){
-                pool.execute(Server.init(serverSocketChannel.socket().accept()));
+                pool.execute(Server.init(serverSocket.accept()));
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -25,7 +25,6 @@ public class NameServiceImpl extends NameService {
     private final int nsPort;
     private final String nsHost;
     private final ServerSocket socket;
-    private final int localPort;
     private Map<Reference, Object> servantMap = Collections.synchronizedMap(new HashMap<Reference, Object>());
     private Logger logger;
 
@@ -51,7 +50,6 @@ public class NameServiceImpl extends NameService {
         this.nsHost = nsHost;
         this.nsPort = nsPort;
         this.socket = socket;
-        this.localPort = socket.getLocalPort();
         this.logger = logger;
     }
 
@@ -64,6 +62,7 @@ public class NameServiceImpl extends NameService {
             Socket nsSocket = new Socket(this.nsHost, this.nsPort);
             ConnectionString connectionString = ConnectionString.init(nsSocket);
             connectionString.send(requestMessage);
+            logger.log(Level.INFO, "send");
             checkResponseRebindMessage(connectionString.receive());
 
             connectionString.close();
@@ -101,7 +100,9 @@ public class NameServiceImpl extends NameService {
     }
 
     public Object findServant(Reference servant){
-        return servantMap.get(servant);
+        Object obj = servantMap.get(servant);
+        logger.log(Level.INFO,"findServant: Obj > "+obj+" "+servantMap.size()+"; "+servant);
+        return obj;
     }
 
 
@@ -138,20 +139,20 @@ public class NameServiceImpl extends NameService {
      */
     private Reference checkResponseResolveMessage(String response) throws ResponseException{
         Reference reference = null;
-
         if (response.isEmpty()) throw new ResponseException("Leere Response vom Namensdienst bei Response_Resolve");
         String[] reponseArgs = response.split("!");
-        if (reponseArgs == null || response.indexOf(RESPONSE_RESOLVE_MESSAGE_COMMAND) != 1)
+        if (reponseArgs == null)
             throw new ResponseException("Falsche Response vom Namensdienst bei Response_Resolve");
 
         if (response.indexOf(RESPONSE_RESOLVE_MESSAGE_COMMAND) == 1 && reponseArgs.length >= 1 )
             throw new ResponseException("Error Response vom Namensdienst");
 
-        if (reponseArgs.length == 5 ) {
-            String host = reponseArgs[1];
-            int port = Integer.parseInt(reponseArgs[2]);
-            String type = reponseArgs[3];
-            String name = reponseArgs[4];
+        if (reponseArgs.length == 2 ) {
+            String[] reponseParams = reponseArgs[1].split(";");
+            String host = reponseParams[0].trim();
+            int port = Integer.parseInt(reponseParams[1].trim());
+            String type = reponseParams[2].trim();
+            String name = reponseParams[3].trim();
             reference = new Reference(host,port,type,name);
 
         }else throw new ResponseException("Falsche Anzahl an Parameter vom Namensdienst bei Response_Resolve");
@@ -171,7 +172,9 @@ public class NameServiceImpl extends NameService {
         String port = reference.getPort()+"";
         String type = reference.getType();
         String name = reference.getName();
-        return REQUEST_REBIND_MESSAGE_COMMAND +"!"+host+";"+port+";"+type+";"+name;
+        String returnStr = REQUEST_REBIND_MESSAGE_COMMAND +" ! "+host+"; "+port+"; "+type+"; "+name;
+        logger.log(Level.INFO, returnStr);
+        return returnStr;
     }
     /**
      * Erstellt die Resolve-Nachricht die zum Namensdienst geliefert wird
@@ -181,7 +184,7 @@ public class NameServiceImpl extends NameService {
      * @return String
      */
     private String createRequestResolveMessage(String name) {
-        return REQUEST_RESOLVE_MESSAGE_COMMAND +"!"+name;
+        return REQUEST_RESOLVE_MESSAGE_COMMAND +" ! "+name;
     }
 
 
@@ -196,20 +199,18 @@ public class NameServiceImpl extends NameService {
         Reference reference = null;
         try {
             String localhost = InetAddress.getLocalHost().getHostName();
-            int port = this.getLocalPort();
+            int port = socket.getLocalPort();
             String type = servant.getClass().getName();
             reference = new Reference(localhost, port, type, name);
             servantMap.put(reference,servant);
+
         } catch (UnknownHostException e) {
             logger.log(Level.SEVERE,e.toString());
         }
         return reference;
     }
 
-
-
-    public int getLocalPort(){
-        return this.localPort;
+    public ServerSocket getSocket() {
+        return socket;
     }
-
 }

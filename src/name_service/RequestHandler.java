@@ -2,6 +2,7 @@ package name_service;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 /**
  * name_service.RequestHandler Empfaengt/Sendet die Nachrichten von/nach der
@@ -13,10 +14,12 @@ public class RequestHandler extends Thread {
 	private NameService nameService;
 	private Socket socket;
 	private Connection connection;
+    private Logger logger;
 
-	private RequestHandler(NameService nameService, Socket socket) {
+	private RequestHandler(NameService nameService, Socket socket, Logger logger) {
 		this.nameService = nameService;
 		this.socket = socket;
+        this.logger = logger;
 		try {
 			this.connection = new Connection(socket);
 		} catch (IOException e) {
@@ -25,8 +28,8 @@ public class RequestHandler extends Thread {
 		}
 	}
 
-	public static RequestHandler init(NameService nameService, Socket socket) {
-		return new RequestHandler(nameService, socket);
+	public static RequestHandler init(NameService nameService, Socket socket, Logger logger) {
+		return new RequestHandler(nameService, socket, logger);
 	}
 
 	@Override
@@ -40,7 +43,7 @@ public class RequestHandler extends Thread {
 			
 			for (Command command : Command.values()){
 				if (requestCommand.equals(command.toString().toLowerCase() + " ")){
-					String response = command.handleInput(requestParams, nameService);
+					String response = command.handleInput(requestParams, nameService, logger);
 					connection.send(response);
 					commandFound = true; 
 				}

@@ -1,5 +1,10 @@
 package name_service;
 
+import sun.rmi.runtime.Log;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public enum Command {
 	REQUEST_REBIND, 
 	RESPONSE_REBIND, 
@@ -7,7 +12,7 @@ public enum Command {
 	RESPONSE_RESOLVE; 	
 	
 	
-	public String handleInput(String inputWithOutCommand, NameService nameService){
+	public String handleInput(String inputWithOutCommand, NameService nameService, Logger logger){
 		switch(this) {
 		//Rebind Anfrage
 			case REQUEST_REBIND:		
@@ -15,8 +20,9 @@ public enum Command {
 
 				System.out.println("Request rebind");
 				Reference reference = new Reference(params[2].trim(), params[0].trim(), Integer.parseInt(params[1].trim()), params[3].trim()); 
-				nameService.rebind(params[3].trim(), reference); 
-				return "response_rebind ! ok"; 
+				nameService.rebind(params[3].trim(), reference);
+                logger.log(Level.INFO, "response_rebind!ok");
+				return "response_rebind!ok";
 		//Response Anfrage
 			case REQUEST_RESOLVE:
 				System.out.println("Request resolve");
@@ -43,7 +49,7 @@ public enum Command {
         String port = reference.getPort()+"";
         String type = reference.getType();
         String name = reference.getName();
-        return "response_resolve" +" ! "+host+";"+port+";"+type+";"+name;
+        return "response_resolve" +" ! "+host+"; "+port+"; "+type+"; "+name;
     }
 	
 }

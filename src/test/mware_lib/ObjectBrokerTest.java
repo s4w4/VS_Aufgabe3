@@ -5,7 +5,6 @@ import junit.framework.TestCase;
 import mware_lib.NameService;
 import mware_lib.ObjectBroker;
 import org.junit.Test;
-import testSockets.FieldAccessible;
 
 public class ObjectBrokerTest extends TestCase {
 
@@ -44,11 +43,20 @@ public class ObjectBrokerTest extends TestCase {
 
         TestClass testClass = new TestClass();
         nameService.rebind(testClass, "testClass");
-        Object servant = nameService.resolve("testClass");
-
-
+        Object object = nameService.resolve("testClass");
+        System.out.println(object);
     }
 
+    @Test
+    public void testShutDown(){
+        NameService nameService = objectBroker.getNameService();
+
+        TestClass testClass = new TestClass();
+        nameService.rebind(testClass,"test");
+        objectBroker.shutdown();
+        Object object = nameService.resolve("test");
+        System.out.println(object);
+    }
 
     private class TestClass{
         private String theField;

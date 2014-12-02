@@ -67,7 +67,7 @@ public class NameServiceImpl extends NameService implements Runnable{
 				logger.info("Waiting for connection - listening TCP port " + listenPort);
 				//Blockiert auf Verbindungsanfrage warten 
 				connectionSocket = listenerSocket.accept(); 
-				(RequestHandler.init(this, connectionSocket)).start(); 
+				(RequestHandler.init(this, connectionSocket, logger)).start();
 				
 			}
 		} catch (IOException e) {

@@ -72,6 +72,8 @@ public class ObjectBroker {
             fileHandler = new FileHandler("log/Middleware.log");
             SimpleFormatter simpleFormatter = new SimpleFormatter();
             fileHandler.setFormatter(simpleFormatter);
+
+            logger = Logger.getLogger(ObjectBroker.class.getName() );
             logger.addHandler(fileHandler);
             logger.info("Logger erstellt");
 
@@ -85,8 +87,21 @@ public class ObjectBroker {
         } catch (IOException e) {
             logger.log(Level.SEVERE,e.toString());
         }  catch (SecurityException e) {
-            logger.log(Level.SEVERE,e.toString());
+            logger.log(Level.SEVERE, e.toString());
         }
     }
 
+
+    public static void main(String[] args){
+        ObjectBroker ob = ObjectBroker.init("localhost",10002,false);
+        NameService ns = ob.getNameService();
+
+        TestClass testC = new TestClass();
+        ns.rebind(testC, "myTestClass");
+        Object obj = ns.resolve("myTestClass");
+    }
+
+    private static class TestClass{
+        private String theField;
+    }
 }
