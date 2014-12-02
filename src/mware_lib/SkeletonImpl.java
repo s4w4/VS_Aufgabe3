@@ -28,7 +28,7 @@ public class SkeletonImpl extends Skeleton {
         try {
 
             ConnectionObject connectionObject = ConnectionObject.init(socket);
-            logger.log(Level.INFO,"Verbindungsaufbau");
+            logger.log(Level.INFO,"Verbindungsaufbau ");
             CallMethod callMethod = receiveMethod(connectionObject);
             logger.log(Level.INFO,"Skeleton Receive: Methodenname= "+callMethod.getMethodName()+", " +
                     "Args= "+callMethod.getArgs()+", " +

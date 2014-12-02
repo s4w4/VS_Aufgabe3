@@ -4,16 +4,21 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.logging.*;
 
 public class NameServiceImpl extends NameService implements Runnable{
 
+    private final int THREAD_POOL_SIZE = 1000;
 	private int listenPort;
 	private Logger logger; 
 	private FileHandler fileHandler;
 	private ServerSocket listenerSocket;
 	private Socket connectionSocket; 
-	private Map<String, Reference> nameReferences; 
+	private Map<String, Reference> nameReferences;
+    private ExecutorService pool;
 	
 	public NameServiceImpl(int listenPort) {
 		nameReferences = new HashMap<String, Reference>(); 
@@ -30,7 +35,8 @@ public class NameServiceImpl extends NameService implements Runnable{
 		logger = Logger.getLogger(NameServiceImpl.class.getName() );
 		logger.addHandler(fileHandler);
 		logger.info("Logger erstellt");
-		this.listenPort = listenPort; 
+		this.listenPort = listenPort;
+        this.pool = createThreadPool();
 				
 		
 	}
@@ -65,8 +71,8 @@ public class NameServiceImpl extends NameService implements Runnable{
 			while(true) {
 				logger.info("Waiting for connection - listening TCP port " + listenPort);
 				//Blockiert auf Verbindungsanfrage warten 
-				connectionSocket = listenerSocket.accept(); 
-				(RequestHandler.init(this, connectionSocket, logger)).start();
+				connectionSocket = listenerSocket.accept();
+                pool.execute((RequestHandler.init(this, connectionSocket, logger)));
 				
 			}
 		} catch (IOException e) {
@@ -74,6 +80,21 @@ public class NameServiceImpl extends NameService implements Runnable{
 			e.printStackTrace();
 		} 
 	}
+
+    /**
+     * Erstellt einen ThreadPool für die Skeletons
+     * @return ExecutorService
+     */
+    private ExecutorService createThreadPool() {
+        return Executors.newFixedThreadPool(THREAD_POOL_SIZE, new ThreadFactory() {
+            @Override
+            public Thread newThread(Runnable r) {
+                Thread thread = new Thread(r);
+                thread.setDaemon(true);
+                return thread;
+            }
+        });
+    }
 
 
 }

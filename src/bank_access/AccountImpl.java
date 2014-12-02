@@ -19,7 +19,7 @@ public class AccountImpl extends AccountImplBase {
 	public AccountImpl(Reference reference) {
 		this.reference = reference;
 		this.dispatcher = Dispatcher.init(reference.getIp(),
-				reference.getPort());
+				reference.getPort(), logger);
 		this.logger = Logger.getLogger("bankAccess");
 	}
 

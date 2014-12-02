@@ -1,5 +1,6 @@
 package bank_access;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
@@ -19,7 +20,7 @@ public class ManagerImpl extends ManagerImplBase {
 	public ManagerImpl(Reference reference) {
 		this.reference = reference;
 		this.dispatcher = Dispatcher.init(reference.getIp(),
-				reference.getPort());
+				reference.getPort(), logger);
 		this.logger = Logger.getLogger("bankAccess");
 	}
 
@@ -31,9 +32,12 @@ public class ManagerImpl extends ManagerImplBase {
 		String methodName = "createAccount";
 		Class<?>[] types = new Class<?>[] { String.class, String.class };
 		Object[] args = new Object[] { owner, branch };
+        logger.log(Level.INFO,"SendToSkeleton Anfang");
 		ReturnMethod returnMethod = (ReturnMethod) dispatcher.sendToSkeleton(
 				reference, methodName, types, args);
-		Throwable exception = returnMethod.getThrowable();
+        logger.log(Level.INFO,"SendToSkeleton Ende");
+
+        Throwable exception = returnMethod.getThrowable();
 		if (exception != null) {
 			if (exception instanceof InvalidParamException) {
 				logger.info("ManagerImpl: createAccount(" + "owner = " + owner + ", branch = "

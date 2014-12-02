@@ -18,7 +18,7 @@ public class TransactionImpl extends TransactionImplBase {
 	public TransactionImpl(Reference reference) {
 		this.reference = reference;
 		this.dispatcher = Dispatcher.init(reference.getIp(),
-				reference.getPort());
+				reference.getPort(), logger);
 		this.logger = Logger.getLogger("cashAccess");
 	}
 
