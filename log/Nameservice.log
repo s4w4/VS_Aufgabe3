@@ -1,6 +1,8 @@
-Dez 02, 2014 2:40:59 AM name_service.NameServiceImpl <init>
+Dez 02, 2014 2:55:16 AM name_service.NameServiceImpl <init>
 INFORMATION: Logger erstellt
-Dez 02, 2014 2:40:59 AM name_service.NameServiceImpl run
-INFORMATION: Waiting for connection - listening TCP port 5002
-Dez 02, 2014 2:41:11 AM name_service.NameServiceImpl run
-INFORMATION: Waiting for connection - listening TCP port 5002
+Dez 02, 2014 2:55:16 AM name_service.NameServiceImpl run
+INFORMATION: Waiting for connection - listening TCP port 10002
+Dez 02, 2014 2:55:18 AM name_service.NameServiceImpl run
+INFORMATION: Waiting for connection - listening TCP port 10002
+Dez 02, 2014 2:55:18 AM name_service.NameServiceImpl rebind
+INFORMATION: rebind
