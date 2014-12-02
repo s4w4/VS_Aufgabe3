@@ -1,7 +1,5 @@
 package mware_lib;
 
-import java.io.IOException;
-
 public abstract class Dispatcher {
 
     public static Dispatcher init(String host, int port) {

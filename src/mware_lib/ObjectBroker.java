@@ -1,6 +1,8 @@
 package mware_lib;
 
 
+import bank_access.AccountImplBase;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.logging.*;
@@ -69,20 +71,20 @@ public class ObjectBroker {
      */
     public ObjectBroker(String serviceHost, int listenPort, boolean debug) {
         try {
-            fileHandler = new FileHandler("log/Middleware.log");
-            SimpleFormatter simpleFormatter = new SimpleFormatter();
-            fileHandler.setFormatter(simpleFormatter);
-
             logger = Logger.getLogger(ObjectBroker.class.getName() );
-            logger.addHandler(fileHandler);
+            if(debug) {
+                fileHandler = new FileHandler("log/Middleware.log");
+                SimpleFormatter simpleFormatter = new SimpleFormatter();
+                fileHandler.setFormatter(simpleFormatter);
+                logger.addHandler(fileHandler);
+            }
+
             logger.info("Logger erstellt");
 
             serverSocket = new ServerSocket(0);
             this.nameService = NameServiceImpl.init(serviceHost, listenPort, serverSocket, logger);
             skeletonManager = SkeletonManagerImpl.init(nameService, logger);
             (new Thread(skeletonManager)).start();
-
-
 
         } catch (IOException e) {
             logger.log(Level.SEVERE,e.toString());
@@ -99,6 +101,8 @@ public class ObjectBroker {
         TestClass testC = new TestClass();
         ns.rebind(testC, "myTestClass");
         Object obj = ns.resolve("myTestClass");
+
+
     }
 
     private static class TestClass{

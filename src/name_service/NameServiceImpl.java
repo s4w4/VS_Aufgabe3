@@ -45,13 +45,8 @@ public class NameServiceImpl extends NameService implements Runnable{
 
 	@Override
 	public synchronized Reference resolve(String name) {
-		logger.info("resolve: name = " + name);
 		Reference reference= nameReferences.get(name);
-		System.out.println(nameReferences.size() + " resolve ");
-		System.out.println(nameReferences.get("tut"));
-		if (reference == null)
-			logger.info("resolve: ref = " + null);
-
+        logger.log(Level.INFO, reference.toString());
 		return reference; 
 	}
 

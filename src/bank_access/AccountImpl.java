@@ -8,7 +8,7 @@ import mware_lib.Reference;
 import mware_lib.ReturnMethod;
 
 /**
- * Created by Alex on 30.11.2014.
+ * AccountImpl
  */
 public class AccountImpl extends AccountImplBase {
 
