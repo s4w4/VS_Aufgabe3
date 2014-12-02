@@ -11,7 +11,6 @@ public class NameServiceImpl extends NameService implements Runnable{
 	private int listenPort;
 	private Logger logger; 
 	private FileHandler fileHandler;
-	private ServerSocket serverSocket;
 	private ServerSocket listenerSocket;
 	private Socket connectionSocket; 
 	private Map<String, Reference> nameReferences; 
@@ -40,12 +39,20 @@ public class NameServiceImpl extends NameService implements Runnable{
 	public synchronized void rebind(String name, Reference reference) {
 		logger.info("rebind: " + " name = " + name + ", ip = " + reference.getIp() + ", port = " + reference.getPort() + ", type = " + reference.getType());
 		nameReferences.put(name, reference);
+		System.out.println(nameReferences.size() + " rebind ");
+		
 	}
 
 	@Override
 	public synchronized Reference resolve(String name) {
 		logger.info("resolve: name = " + name);
-		return nameReferences.get(name); 
+		Reference reference= nameReferences.get(name);
+		System.out.println(nameReferences.size() + " resolve ");
+		System.out.println(nameReferences.get("tut"));
+		if (reference == null)
+			logger.info("resolve: ref = " + null);
+
+		return reference; 
 	}
 
 	@Override
