@@ -43,7 +43,9 @@ public class Client {
 		Client myClient = new Client("localhost", 10002);
 		
 		// Kommunikation
-		myClient.send("request_rebind ! host; 1; cool; tut");
+//		myClient.send("request_rebind ! host; 1; cool; tut");
+		myClient.send("request_resolve ! tut");
+
 		System.out.println(myClient.receive());
 		
 		// Verbindung schliessen

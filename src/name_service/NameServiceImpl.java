@@ -38,13 +38,13 @@ public class NameServiceImpl extends NameService implements Runnable{
 
 	@Override
 	public synchronized void rebind(String name, Reference reference) {
-		logger.info("rebind");
+		logger.info("rebind: " + " name = " + name + ", ip = " + reference.getIp() + ", port = " + reference.getPort() + ", type = " + reference.getType());
 		nameReferences.put(name, reference);
 	}
 
 	@Override
 	public synchronized Reference resolve(String name) {
-		logger.info("resolve");
+		logger.info("resolve: name = " + name);
 		return nameReferences.get(name); 
 	}
 

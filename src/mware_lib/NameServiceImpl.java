@@ -166,7 +166,6 @@ public class NameServiceImpl extends NameService {
         String name = reference.getName();
         return REQUEST_REBIND_MESSAGE_COMMAND +" ! "+host+";"+port+";"+type+";"+name;
     }
-
     /**
      * Erstellt die Resolve-Nachricht die zum Namensdienst geliefert wird
      * bsp:

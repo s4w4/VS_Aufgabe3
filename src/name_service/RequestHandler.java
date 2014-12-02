@@ -32,10 +32,7 @@ public class RequestHandler extends Thread {
 	@Override
 	public void run() {
 		try {
-			System.out.println(" rq ");
-
 			String request = connection.receive(); 
-			System.out.println(request + " sadasd s");
 			boolean commandFound = false; 
 			String[] requestArr = getCommand(request); 
 			String requestCommand = requestArr[0]; 
@@ -43,16 +40,12 @@ public class RequestHandler extends Thread {
 			
 			for (Command command : Command.values()){
 				if (requestCommand.equals(command.toString().toLowerCase() + " ")){
-					System.out.println("ok");
 					String response = command.handleInput(requestParams, nameService);
 					connection.send(response);
 					commandFound = true; 
 				}
 			}
-			System.out.println(request + " ..sssss. ");
 
-			if (!commandFound)
-				System.out.println("pppppp");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
