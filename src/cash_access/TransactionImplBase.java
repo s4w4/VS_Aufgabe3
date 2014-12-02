@@ -1,7 +1,6 @@
 package cash_access;
 
 import mware_lib.Reference;
-import bank_access.ManagerImpl;
 
 /**
  * cash_access.TransactionImplBase
