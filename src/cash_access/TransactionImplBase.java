@@ -1,5 +1,8 @@
 package cash_access;
 
+import mware_lib.Reference;
+import bank_access.ManagerImpl;
+
 /**
  * cash_access.TransactionImplBase
  */
@@ -15,6 +18,7 @@ public abstract class TransactionImplBase {
             throws InvalidParamException;
 
     public static TransactionImplBase narrowCast(Object rawObjectRef) {
-        return null;
+    	Reference reference = (Reference) rawObjectRef;
+        return new TransactionImpl(reference);
     }
 }
