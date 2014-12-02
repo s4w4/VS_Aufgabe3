@@ -26,8 +26,8 @@ public class ManagerImpl extends ManagerImplBase {
 	@Override
 	public String createAccount(String owner, String branch)
 			throws InvalidParamException {
-		logger.info("createAccount: " + "owner = " + owner + ", branch = "
-				+ branch);
+		logger.info("ManagerImpl: createAccount(" + "owner = " + owner + ", branch = "
+				+ branch +")");
 		String methodName = "createAccount";
 		Class<?>[] types = new Class<?>[] { String.class, String.class };
 		Object[] args = new Object[] { owner, branch };
@@ -36,9 +36,14 @@ public class ManagerImpl extends ManagerImplBase {
 		Throwable exception = returnMethod.getThrowable();
 		if (exception != null) {
 			if (exception instanceof InvalidParamException) {
+				logger.info("ManagerImpl: createAccount(" + "owner = " + owner + ", branch = "
+						+ branch +") -> InvalidParamException");
 				throw (InvalidParamException) exception;
 			}
 		}
-		return (String) returnMethod.getReturnValue();
+		String result = (String) returnMethod.getReturnValue(); 
+		logger.info("ManagerImpl: createAccount(" + "owner = " + owner + ", branch = "
+				+ branch +") -> "+result);
+		return result;
 	}
 }

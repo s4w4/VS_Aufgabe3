@@ -24,8 +24,8 @@ public class TransactionImpl extends TransactionImplBase {
 
 	@Override
     public void deposit(String accountID, double amount) throws InvalidParamException {
-		logger.info("deposit: " + "accountID = " + accountID + ", amount = "
-				+ amount);
+		logger.info("TransactionImpl: deposit(" + "accountID = " + accountID + ", amount = "
+				+ amount +")");
 		String methodName = "deposit";
 		Class<?>[] types = new Class<?>[] { String.class, Double.TYPE };
 		Object[] args = new Object[] { accountID, amount };
@@ -33,6 +33,8 @@ public class TransactionImpl extends TransactionImplBase {
 		Throwable exception = returnMethod.getThrowable();
 		if (exception != null) {
 			if (exception instanceof InvalidParamException) {
+				logger.info("TransactionImpl: deposit(" + "accountID = " + accountID + ", amount = "
+						+ amount +")->InvalidParamException");
 				throw (InvalidParamException) exception;
 			}
 		}
@@ -40,8 +42,8 @@ public class TransactionImpl extends TransactionImplBase {
 
     @Override
     public void withdraw(String accountID, double amount) throws InvalidParamException, OverdraftException {
-		logger.info("withdraw: " + "accountID = " + accountID + ", amount = "
-				+ amount);
+		logger.info("TransactionImpl: withdraw(" + "accountID = " + accountID + ", amount = "
+				+ amount+")");
 		String methodName = "withdraw";
 		Class<?>[] types = new Class<?>[] { String.class, Double.TYPE };
 		Object[] args = new Object[] { accountID, amount };
@@ -49,9 +51,13 @@ public class TransactionImpl extends TransactionImplBase {
 		Throwable exception = returnMethod.getThrowable();
 		if (exception != null) {
 			if (exception instanceof InvalidParamException) {
+				logger.info("TransactionImpl: withdraw(" + "accountID = " + accountID + ", amount = "
+						+ amount+")->InvalidParamException");
 				throw (InvalidParamException) exception;
 			}
 			if (exception instanceof OverdraftException) {
+				logger.info("TransactionImpl: withdraw(" + "accountID = " + accountID + ", amount = "
+						+ amount+")->OverdraftException");
 				throw (OverdraftException) exception;
 			}
 		}
@@ -59,7 +65,7 @@ public class TransactionImpl extends TransactionImplBase {
 
     @Override
     public double getBalance(String accountID) throws InvalidParamException {
-		logger.info("getBalance: " + "accountID = " + accountID);
+		logger.info("TransactionImpl: getBalance(" + "accountID = " + accountID+")");
 		String methodName = "getBalance";
 		Class<?>[] types = new Class<?>[] { String.class };
 		Object[] args = new Object[] { accountID};
@@ -67,9 +73,14 @@ public class TransactionImpl extends TransactionImplBase {
 		Throwable exception = returnMethod.getThrowable();
 		if (exception != null) {
 			if (exception instanceof InvalidParamException) {
+				logger.info("TransactionImpl: getBalance(" + "accountID = " + accountID+")->InvalidParamException");
+
 				throw (InvalidParamException) exception;
 			}
 		}
-		return (Double) returnMethod.getReturnValue();
+		double result = (Double) returnMethod.getReturnValue(); 
+		logger.info("TransactionImpl: getBalance(" + "accountID = " + accountID+")->"+result);
+
+		return result;
     }
 }
