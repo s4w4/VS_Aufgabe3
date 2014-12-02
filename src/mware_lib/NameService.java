@@ -24,4 +24,5 @@ public abstract class NameService {
      * @return  Object
      */
     public abstract Object resolve(String name);
+
 }

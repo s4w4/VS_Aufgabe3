@@ -1,10 +1,11 @@
-package mware_lib;
+package testSockets;
+
+import mware_lib.ConnectionString;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.channels.ServerSocketChannel;
-import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -16,7 +17,7 @@ public class TestServer {
 
     private static final int port = 5000;
     private static final int POOL_SIZE = 4;
-    private static final int MAX_INCOMMING_CONNECTIONS = 4;
+    private static final int MAX_INCOMMING_CONNECTIONS = 2;
 
     public static void main(String[] args){
 
@@ -56,11 +57,14 @@ public class TestServer {
         @Override
         public void run() {
             try {
-                Connection connection = Connection.init(socket);
-                String receive = connection.receive();
+                ConnectionString connectionString = ConnectionString.init(socket);
+                String receive = connectionString.receive();
                 System.out.println("SERVER : " +receive+" >>> "+this.hashCode());
-                connection.close();
+                Thread.sleep(10l);
+                connectionString.close();
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 

@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Test/Test.iml" filepath="$PROJECT_DIR$/Test/Test.iml" />
       <module fileurl="file://$PROJECT_DIR$/VS_Aufgabe3.iml" filepath="$PROJECT_DIR$/VS_Aufgabe3.iml" />
-      <module fileurl="file://$PROJECT_DIR$/bank_access/bank_access.iml" filepath="$PROJECT_DIR$/bank_access/bank_access.iml" />
-      <module fileurl="file://$PROJECT_DIR$/cash_access/cash_access.iml" filepath="$PROJECT_DIR$/cash_access/cash_access.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mware_lib/mware_lib.iml" filepath="$PROJECT_DIR$/mware_lib/mware_lib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/name_service/name_service.iml" filepath="$PROJECT_DIR$/name_service/name_service.iml" />
     </modules>
   </component>
 </project>
