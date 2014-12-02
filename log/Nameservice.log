@@ -1,4 +1,8 @@
-Dez 02, 2014 12:06:43 AM name_service.NameServiceImpl <init>
+Dez 02, 2014 3:18:11 AM name_service.NameServiceImpl <init>
 INFORMATION: Logger erstellt
-Dez 02, 2014 12:06:43 AM name_service.NameServiceImpl rebind
-INFORMATION: rebind
+Dez 02, 2014 3:18:11 AM name_service.NameServiceImpl run
+INFORMATION: Waiting for connection - listening TCP port 10002
+Dez 02, 2014 3:18:13 AM name_service.NameServiceImpl run
+INFORMATION: Waiting for connection - listening TCP port 10002
+Dez 02, 2014 3:18:13 AM name_service.NameServiceImpl resolve
+INFORMATION: resolve: name = tut

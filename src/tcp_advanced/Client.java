@@ -40,10 +40,12 @@ public class Client {
 	 */
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		// Verbindung aufbauen
-		Client myClient = new Client("localhost", 14001);
+		Client myClient = new Client("localhost", 10002);
 		
 		// Kommunikation
-		myClient.send("Knock, knock!");
+//		myClient.send("request_rebind ! host; 1; cool; tut");
+		myClient.send("request_resolve ! tut");
+
 		System.out.println(myClient.receive());
 		
 		// Verbindung schliessen

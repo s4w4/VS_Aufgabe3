@@ -1,6 +1,5 @@
 package test.mware_lib;
 
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import mware_lib.NameService;

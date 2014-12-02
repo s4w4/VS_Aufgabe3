@@ -22,14 +22,14 @@ public class Client {
 		OutputStream out;		
 		
 		// Verbindung aufbauaen
-		mySock = new Socket("localhost", 14001);
+		mySock = new Socket("localhost", 10002);
 		
 		// I/O-Kanäle der Socket
 		in = new BufferedReader(new InputStreamReader(mySock.getInputStream()));
 		out = mySock.getOutputStream();
 		
 		// Kommunikation
-		out.write(("Knock, knock!\n").getBytes());
+		out.write(("request_rebind ! host 1 cool tut").getBytes());
 		System.out.println(in.readLine());
 		
 		// Verbindung schliessen
