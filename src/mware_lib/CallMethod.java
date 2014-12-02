@@ -1,13 +1,20 @@
 package mware_lib;
 
 /**
- * Created by Alex on 02.12.2014.
+ * CallMethod
  */
 public class CallMethod {
     private Reference reference;
     private String methodName;
     private Object[] args;
     private Class<?>[] types;
+
+    public CallMethod(Reference reference, String methodName, Object[] args, Class<?>[] types){
+        this.reference = reference;
+        this.methodName = methodName;
+        this.args = args;
+        this.types = types;
+    }
 
     public Reference getReference() {
         return reference;
