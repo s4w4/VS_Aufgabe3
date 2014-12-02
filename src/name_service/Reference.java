@@ -6,6 +6,11 @@ package name_service;
  */
 public class Reference {
 	
+	@Override
+	public String toString() {
+		return "Reference [type=" + type + ", ip=" + ip + ", port=" + port
+				+ ", name=" + name + "]";
+	}
 	// Der Datentyp des referenzierten Objekts
 	private String type;
 	// Der IP, wo sich das Objekt befindet

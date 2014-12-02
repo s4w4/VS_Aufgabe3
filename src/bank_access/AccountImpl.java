@@ -25,7 +25,7 @@ public class AccountImpl extends AccountImplBase {
 
 	@Override
 	public void transfer(double amount) throws OverdraftException {
-		logger.info("transfer: " + amount);
+		logger.info("AccountImpl: transfer(" + amount + ")");
 		String methodName = "transfer";
 		Class<?>[] types = new Class<?>[] { Double.TYPE };
 		Object[] args = new Object[] { amount };
@@ -33,9 +33,9 @@ public class AccountImpl extends AccountImplBase {
 		returnMethod = (ReturnMethod) dispatcher.sendToSkeleton(reference,
 				methodName, types, args);
 		Throwable exception = returnMethod.getThrowable();
-
 		if (exception != null) {
 			if (exception instanceof OverdraftException) {
+				logger.info("AccountImpl: transfer(" + amount + ") -> OverdraftException");
 				throw (OverdraftException) exception;
 			}
 		}
@@ -43,14 +43,16 @@ public class AccountImpl extends AccountImplBase {
 
 	@Override
 	public double getBalance() {
-		logger.info("getBalance");
+		logger.info("AccountImpl: getBalance()");
 		String methodName = "getBalance";
 		Class<?>[] types = new Class<?>[] {};
 		Object[] args = new Object[] {};
 		ReturnMethod returnMethod = (ReturnMethod) dispatcher.sendToSkeleton(
 				reference, methodName, types, args);
+		double result = (Double) returnMethod.getReturnValue(); 
+		logger.info("AccountImpl: getBalance()->"+result);
 
-		return (Double) returnMethod.getReturnValue();
+		return result;
 	}
 
 }

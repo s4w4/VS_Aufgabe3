@@ -46,7 +46,11 @@ public class NameServiceImpl extends NameService implements Runnable{
 	@Override
 	public synchronized Reference resolve(String name) {
 		Reference reference= nameReferences.get(name);
-        logger.log(Level.INFO, reference.toString());
+		if (reference == null){
+	        logger.log(Level.INFO, "Name=" + name + " ist in nameservice nicht vorhanden");
+		}else{
+			logger.log(Level.INFO, reference.toString());
+		}
 		return reference; 
 	}
 

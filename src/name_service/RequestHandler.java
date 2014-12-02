@@ -36,6 +36,7 @@ public class RequestHandler extends Thread {
 	public void run() {
 		try {
 			String request = connection.receive(); 
+			logger.info("Request = " + request);
 			boolean commandFound = false; 
 			String[] requestArr = getCommand(request); 
 			String requestCommand = requestArr[0]; 
