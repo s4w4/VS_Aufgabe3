@@ -89,13 +89,16 @@ public class NameServiceImpl extends NameService {
         return reference;
     }
 
-
     /**
      * Beendet den Namensdienst
      * @throws IOException
      */
     public void shutdown() throws IOException {
         this.socket.close();
+    }
+
+    public Object findServant(Reference servant){
+        return servantMap.get(servant);
     }
 
 
@@ -202,4 +205,5 @@ public class NameServiceImpl extends NameService {
     public int getLocalPort(){
         return this.localPort;
     }
+
 }

@@ -13,7 +13,6 @@ import java.util.concurrent.ThreadFactory;
  */
 public class SkeletonManagerImpl extends SkeletonManager {
 
-    private final int SOCKET_TIMEOUT_IN_MS = 1000;
     private final int MAX_SOCKET_QUEUE_LENGTH = 40;
     private final int THREAD_POOL_SIZE = 1000;
     private final ExecutorService pool;
@@ -70,11 +69,18 @@ public class SkeletonManagerImpl extends SkeletonManager {
         });
     }
 
-
+    /**
+     * liefert den Flag für den Interrupt
+     * @return Boolean
+     */
     public boolean isInterrupt() {
         return interrupt;
     }
 
+    /**
+     * setzt den Flag für den Interrupt
+     * @param interrupt Boolean
+     */
     public void setInterrupt(boolean interrupt) {
         this.interrupt = interrupt;
     }
