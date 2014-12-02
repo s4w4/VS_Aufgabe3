@@ -40,6 +40,11 @@ public class SkeletonImpl extends Skeleton {
         return (CallMethod) connectionObject.receive();
     }
 
+    /**
+     * Ruft die originale Methode auf und liefert den Returnwert zurück
+     * @param callMethod    CallMethod
+     * @return  ReturnMethod
+     */
     private ReturnMethod invoke(CallMethod callMethod)   {
         ReturnMethod returnMethod;
         Object returnValue = null;

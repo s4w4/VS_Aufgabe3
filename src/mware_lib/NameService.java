@@ -25,5 +25,4 @@ public abstract class NameService {
      */
     public abstract Object resolve(String name);
 
-    public abstract Object findServant(Reference reference);
 }
