@@ -1,8 +1,5 @@
 package name_service;
-/**
- * Die Connection Klasse ist aus tcp_advanced.zip  
- * Die Connection ist fuer die Kommunikation zustaendig
- */
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,12 +9,8 @@ import java.net.Socket;
 public class Connection {
 	private BufferedReader in;
 	private OutputStream out;
-
-    public static Connection init(Socket socket) throws IOException {
-        return new Connection(socket);
-    }
-
-	private Connection(Socket mySock) throws IOException {
+	
+	public Connection(Socket mySock) throws IOException {
 		in = new BufferedReader(new InputStreamReader(mySock.getInputStream()));
 		out = mySock.getOutputStream();		
 	}

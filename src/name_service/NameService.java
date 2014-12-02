@@ -34,6 +34,8 @@ public abstract class NameService{
 	 */
 	public static NameServiceImpl init(int port){
 		NameServiceImpl ns = new NameServiceImpl(port); 
+		Thread t = new Thread(ns); 
+		t.start(); 
 		return ns; 
 	}
 }
