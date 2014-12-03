@@ -3,6 +3,7 @@ package mware_lib;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.*;
 
@@ -11,23 +12,25 @@ import java.util.logging.*;
  */
 public class SkeletonImpl extends Skeleton {
 
-    private final Socket socket;
+    private final ServerSocket socketServer;
+    private final Socket socket ;
     private final NameServiceImpl nameService;
     private Logger logger;
 
-    protected SkeletonImpl(Socket socket, NameServiceImpl nameService, Logger logger){
+    protected SkeletonImpl(Socket socket, ServerSocket socketServer, NameServiceImpl nameService, Logger logger){
+        this.socketServer = socketServer;
         this.socket = socket;
         this.nameService = nameService;
         this.logger = logger;
-        logger.log(Level.CONFIG, "Skeleton erstellt");
+        logger.log(Level.INFO, "Skeleton erstellt");
     }
 
     @Override
     public void run() {
-        logger.log(Level.CONFIG, "Skeleton gestartet");
+        logger.log(Level.INFO, "Skeleton gestartet");
         try {
 
-            ConnectionObject connectionObject = ConnectionObject.init(socket);
+            ConnectionObjectServer connectionObject = ConnectionObjectServer.init(socketServer);
             logger.log(Level.INFO,"Verbindungsaufbau ");
             CallMethod callMethod = receiveMethod(connectionObject);
             logger.log(Level.INFO,"Skeleton Receive: Methodenname= "+callMethod.getMethodName()+", " +
@@ -49,7 +52,7 @@ public class SkeletonImpl extends Skeleton {
         }
     }
 
-    private CallMethod receiveMethod(ConnectionObject connectionObject) throws IOException, ClassNotFoundException,RuntimeException {
+    private CallMethod receiveMethod(ConnectionObjectServer connectionObject) throws IOException, ClassNotFoundException,RuntimeException {
         return (CallMethod) connectionObject.receive();
     }
 

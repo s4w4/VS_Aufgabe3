@@ -1,6 +1,7 @@
 package mware_lib;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,12 +34,12 @@ public class SkeletonManagerImpl extends SkeletonManager {
 
     @Override
     public void run() {
-        logger.log(Level.CONFIG, "SkeletonManager gestartet");
+        logger.log(Level.INFO, "SkeletonManager gestartet");
         ServerSocket serverSocket = null;
         try {
              serverSocket = nameService.getSocket();
             while (!this.isInterrupt()){
-                pool.execute(Skeleton.init(serverSocket.accept(),nameService, logger));
+                pool.execute(Skeleton.init(serverSocket.accept(),serverSocket,nameService, logger));
             }
 
         } catch (IOException e) {
@@ -47,7 +48,7 @@ public class SkeletonManagerImpl extends SkeletonManager {
             try {
                 if (serverSocket != null) serverSocket.close();
             } catch (IOException e) {
-                logger.log(Level.SEVERE,e.toString());
+                logger.log(Level.SEVERE, e.toString());
             }
         }
     }

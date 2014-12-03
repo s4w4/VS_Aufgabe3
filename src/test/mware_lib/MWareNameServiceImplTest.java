@@ -17,7 +17,7 @@ import java.net.UnknownHostException;
 import java.util.logging.Logger;
 
 public class MWareNameServiceImplTest extends TestCase {
-
+/*
 
     public MWareNameServiceImplTest(String name) throws IOException {
         super(name);
@@ -132,5 +132,5 @@ public class MWareNameServiceImplTest extends TestCase {
             return new Connection(MySvrSocket.accept());
         }
 
-    }
+    }*/
 }

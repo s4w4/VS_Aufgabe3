@@ -24,7 +24,8 @@ public class NameServiceImpl extends NameService {
 
     private final int nsPort;
     private final String nsHost;
-    private final ServerSocket socket;
+    private final ServerSocket socketString;
+    private final ServerSocket socketObject;
     private Map<Reference, Object> servantMap = Collections.synchronizedMap(new HashMap<Reference, Object>());
     private Logger logger;
 
@@ -32,11 +33,11 @@ public class NameServiceImpl extends NameService {
      * Erstellt NameServiceImpl
      * @param nsHost    Host vom Namensdienst
      * @param nsPort    Port vom Namensdienst
-     * @param socket    ServerSocket von der Application
+     * @param socketString    ServerSocket von der Application
      * @return  NameServiceImpl
      */
-    public static NameServiceImpl init(String nsHost, int nsPort, ServerSocket socket, Logger logger){
-        return new NameServiceImpl(nsHost, nsPort, socket, logger);
+    public static NameServiceImpl init(String nsHost, int nsPort, ServerSocket socketString, ServerSocket socketObject, Logger logger){
+        return new NameServiceImpl(nsHost, nsPort, socketString, socketObject, logger);
     }
 
     /**
@@ -44,12 +45,14 @@ public class NameServiceImpl extends NameService {
      *
      * @param nsHost    Host vom Namensdienst
      * @param nsPort    Port vom Namensdienst
-     * @param socket    ServerSocket von der Application
+     * @param socketString    ServerSocket von der Application
+     * @param socketObject    ServerSocket von der Application
      */
-    public NameServiceImpl(String nsHost, int nsPort, ServerSocket socket, Logger logger){
+    public NameServiceImpl(String nsHost, int nsPort, ServerSocket socketString, ServerSocket socketObject, Logger logger){
         this.nsHost = nsHost;
         this.nsPort = nsPort;
-        this.socket = socket;
+        this.socketString = socketString;
+        this.socketObject = socketObject;
         this.logger = logger;
     }
 
@@ -84,7 +87,7 @@ public class NameServiceImpl extends NameService {
             connectionString.send(requestMessage);
             logger.log(Level.INFO, "Resolve Send: Nachricht= "+requestMessage);
             reference = checkResponseResolveMessage(connectionString.receive());
-
+            connectionString.close();
         } catch (IOException e) {
             logger.log(Level.SEVERE,e.toString());
         } catch (ResponseException e) {
@@ -99,7 +102,8 @@ public class NameServiceImpl extends NameService {
      */
     public void shutdown() throws IOException {
         logger.log(Level.INFO,"NameService beendet");
-        this.socket.close();
+        this.socketString.close();
+        this.socketObject.close();
     }
 
     public Object findServant(Reference servant){
@@ -205,7 +209,7 @@ public class NameServiceImpl extends NameService {
         Reference reference = null;
         try {
             String localhost = InetAddress.getLocalHost().getHostName();
-            int port = socket.getLocalPort();
+            int port = socketObject.getLocalPort();
             String type = servant.getClass().getName();
             reference = new Reference(localhost, port, type, name);
             servantMap.put(reference,servant);
@@ -217,6 +221,6 @@ public class NameServiceImpl extends NameService {
     }
 
     public ServerSocket getSocket() {
-        return socket;
+        return socketObject;
     }
 }

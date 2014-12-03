@@ -22,7 +22,7 @@ public class DispatcherImpl extends Dispatcher{
         this.port = port;
 
         try {
-            fileHandler = new FileHandler("log/Dispatcher.log");
+            fileHandler = new FileHandler("Dispatcher.log");
             SimpleFormatter simpleFormatter = new SimpleFormatter();
             fileHandler.setFormatter(simpleFormatter);
         } catch (SecurityException e) {
@@ -50,6 +50,7 @@ public class DispatcherImpl extends Dispatcher{
             ConnectionObject connectionObject = ConnectionObject.init(socket);
             logger.log(Level.INFO,"Con = "+connectionObject);
 
+            //String callMethodStr = "callMethodStr!"+reference+";"+methodName+";"+args+";"+types;
             connectionObject.send(callMethod);
             logger.log(Level.INFO,"CallMethod gesendet");
 
@@ -59,8 +60,8 @@ public class DispatcherImpl extends Dispatcher{
 
         } catch (IOException e) {
             logger.log(Level.INFO, e.toString());
-        } catch (ClassNotFoundException e) {
-            logger.log(Level.INFO, e.toString());
+         } catch (ClassNotFoundException e) {
+               logger.log(Level.INFO, e.toString());
         } finally {
             try {
                if (socket != null) {

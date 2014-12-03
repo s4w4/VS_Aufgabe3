@@ -1,6 +1,5 @@
 package bank_access;
 
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import mware_lib.Dispatcher;

@@ -1,8 +1,6 @@
 package mware_lib;
 
 
-import bank_access.AccountImplBase;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.logging.*;
@@ -16,7 +14,8 @@ public class ObjectBroker {
 
     private SkeletonManager skeletonManager;
     private NameServiceImpl nameService;
-    private ServerSocket serverSocket;
+    private ServerSocket serverSocketString;
+    private ServerSocket serverSocketObject;
     private Logger logger;
     private FileHandler fileHandler;
 
@@ -81,14 +80,15 @@ public class ObjectBroker {
                 logger.info("log/Middleware.log erstellt");
             }
 
-            serverSocket = new ServerSocket(0);
-            logger.log(Level.INFO, "ServerSocket erstellt mit Port: "+serverSocket.getLocalPort());
+            serverSocketString = new ServerSocket(0);
+            serverSocketObject = new ServerSocket(0);
+            logger.log(Level.INFO, "ServerSocket erstellt mit Port: " + serverSocketString.getLocalPort());
 
-            this.nameService = NameServiceImpl.init(serviceHost, listenPort, serverSocket, logger);
-            logger.log(Level.CONFIG,"NameService erstellt");
+            this.nameService = NameServiceImpl.init(serviceHost, listenPort, serverSocketString, serverSocketObject,logger);
+            logger.log(Level.CONFIG, "NameService erstellt");
 
             skeletonManager = SkeletonManagerImpl.init(nameService, logger);
-            logger.log(Level.CONFIG,"SkeletonManager erstellt");
+            logger.log(Level.CONFIG, "SkeletonManager erstellt");
 
             (new Thread(skeletonManager)).start();
 

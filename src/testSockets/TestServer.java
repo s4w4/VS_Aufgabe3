@@ -58,8 +58,8 @@ public class TestServer {
 
         @Override
         public void run() {
-            try {
-                ConnectionString connectionString = ConnectionString.init(socket);
+            /*try {
+                Connection connectionString = ConnectionString.init(socket);
                 String receive = connectionString.receive();
                 System.out.println("SERVER : " +receive+" >>> "+this.hashCode());
                 Thread.sleep(10l);
@@ -68,7 +68,7 @@ public class TestServer {
                 e.printStackTrace();
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
+            }*/
 
         }
 
