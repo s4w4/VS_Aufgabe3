@@ -32,7 +32,7 @@ public class NameServiceImpl extends NameService{
 	private NameServiceImpl(int listenPort) {
 		nameReferences = new HashMap<String, Reference>(); 
 		try {
-			fileHandler = new FileHandler("log/Nameservice.log");
+			fileHandler = new FileHandler("Nameservice.log");
 			SimpleFormatter simpleFormatter = new SimpleFormatter(); 
 			fileHandler.setFormatter(simpleFormatter);
 		} catch (SecurityException e) {

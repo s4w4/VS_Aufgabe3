@@ -73,7 +73,7 @@ public class ObjectBroker {
             logger.info("Logger erstellt");
 
             if(debug) {
-                fileHandler = new FileHandler("log/Middleware.log");
+                fileHandler = new FileHandler("Middleware.log");
                 SimpleFormatter simpleFormatter = new SimpleFormatter();
                 fileHandler.setFormatter(simpleFormatter);
                 logger.addHandler(fileHandler);
