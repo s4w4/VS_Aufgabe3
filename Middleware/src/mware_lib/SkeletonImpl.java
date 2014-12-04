@@ -46,6 +46,12 @@ public class SkeletonImpl extends Skeleton {
             logger.log(Level.SEVERE,e.toString());
         } catch (RuntimeException e) {
             logger.log(Level.SEVERE,e.toString());
+        } finally {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                logger.log(Level.SEVERE,e.toString());
+            }
         }
     }
 

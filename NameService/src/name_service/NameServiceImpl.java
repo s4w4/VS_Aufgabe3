@@ -11,7 +11,7 @@ import java.util.logging.*;
 
 public class NameServiceImpl extends NameService{
 
-    private final int THREAD_POOL_SIZE = 10000;
+    private final int THREAD_POOL_SIZE = 100;
 	private int listenPort;
 	private Logger logger; 
 	private FileHandler fileHandler;

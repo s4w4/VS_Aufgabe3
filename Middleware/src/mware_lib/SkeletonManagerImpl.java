@@ -12,7 +12,7 @@ import java.util.logging.*;
  */
 public class SkeletonManagerImpl extends SkeletonManager {
 
-    private final int THREAD_POOL_SIZE = 10000;
+    private final int THREAD_POOL_SIZE = 100;
     private final ExecutorService pool;
     private boolean interrupt = false;
 

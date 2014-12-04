@@ -53,11 +53,10 @@ public class DispatcherImpl extends Dispatcher{
 
             connectionObject.send(callMethod);
             logger.log(Level.INFO,"CallMethod gesendet");
-
             returnMethod = (ReturnMethod) connectionObject.receive();
             logger.log(Level.INFO,"ReturnMethod empfangen: "+returnMethod.getReturnValue()+", "+returnMethod.getThrowable());
 
-
+            connectionObject.close();
         } catch (IOException e) {
             logger.log(Level.INFO, e.toString());
         } catch (ClassNotFoundException e) {

@@ -49,12 +49,11 @@ public class RequestHandler extends Thread {
 					commandFound = true; 
 				}
 			}
-
+            connection.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-		
+		}
 	}
 
 	private String[] getCommand(String request) {
